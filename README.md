@@ -50,17 +50,24 @@ práctica Uart
 ### Diagrama de flujo del funcionamiento: 
 
 ```mermaid
-graph TD
-    A[Setup] --> B[Inicializar Serial (UART0)]
-    B --> C[Inicializar Serial2 (UART2)]
-    C --> D{¿Serial disponible?}
-    D -- Sí --> E[Leer carácter de Serial]
-    E --> F[Enviar carácter a Serial2]
-    F --> D
-    D -- No --> G{¿Serial2 disponible?}
-    G -- Sí --> H[Leer carácter de Serial2]
-    H --> I[Enviar carácter a Serial]
-    I --> G
-    G -- No --> J[Fin del loop]
+graph TD;
+    A[Inicio] --> B[Setup]
+    B --> C(Leer datos de la UART0)
+    C --> D(Enviar datos a la UART2)
+    D --> E(Leer datos de la UART2)
+    E --> F(Enviar datos a la UART0)
+    F --> C
+    F --> E
+    C --> G[Fin]
+    E --> G
+    G --> H{¿Serial disponible?}
+    H -->|Sí| I[Leer caracter de Serial]
+    I --> J[Enviar caracter a Serial2]
+    J --> H
+    H -->|No| K{¿Serial2 disponible?}
+    K -->|Sí| L[Leer caracter de Serial2]
+    L --> M[Enviar caracter a Serial]
+    M --> K
+    K -->|No| G
 
 ```
